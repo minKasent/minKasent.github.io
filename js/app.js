@@ -57,7 +57,6 @@
 
 gsap.registerPlugin(ScrollTrigger);
 gsap.registerPlugin(Flip);
-ScrollTrigger.config({ ignoreMobileResize: true });
 
 // --------------------------------------------- //
 // Loader & Loading Animation Start
@@ -588,56 +587,56 @@ $(function() {
   // --------------------------------------------- //
 
   // --------------------------------------------- //
-  // Direct Email Ping Form Start
+  // Mailchimp Subscribe Form Start
   // --------------------------------------------- //
-  $('.notify-form').on('submit', function(e) {
-    e.preventDefault();
-    var form = $(this);
-    var userEmail = form.find('input[type="email"]').val() || '';
-    $('.notify').find('.form').addClass('is-hidden');
-    $('.notify').find('.subscription-ok').addClass('is-visible');
-    if (userEmail) {
-      window.location.href = 'mailto:dangkhoa3971@gmail.com?subject=' + encodeURIComponent('Quick Connect from ' + userEmail) + '&body=' + encodeURIComponent('Hi Khoa,\n\nMy email is: ' + userEmail + '\nLet\'s connect!');
-    }
-    setTimeout(function() {
-      $('.notify').find('.subscription-ok').removeClass('is-visible');
-      $('.notify').find('.form').delay(300).removeClass('is-hidden');
-      $('.notify-form').trigger("reset");
-    }, 5000);
-    return false;
+  $('.notify-form').ajaxChimp({
+    callback: mailchimpCallback,
+    url: 'https://club.us10.list-manage.com/subscribe/post?u=e8d650c0df90e716c22ae4778&amp;id=54a7906900&amp;f_id=00b64ae4f0'
   });
+
+  function mailchimpCallback(resp) {
+    if(resp.result === 'success') {
+      $('.notify').find('.form').addClass('is-hidden');
+      $('.notify').find('.subscription-ok').addClass('is-visible');
+      setTimeout(function() {
+        // Done Functions
+        $('.notify').find('.subscription-ok').removeClass('is-visible');
+        $('.notify').find('.form').delay(300).removeClass('is-hidden');
+        $('.notify-form').trigger("reset");
+      }, 5000);
+    } else if(resp.result === 'error') {
+      $('.notify').find('.form').addClass('is-hidden');
+      $('.notify').find('.subscription-error').addClass('is-visible');
+      setTimeout(function() {
+        // Done Functions
+        $('.notify').find('.subscription-error').removeClass('is-visible');
+        $('.notify').find('.form').delay(300).removeClass('is-hidden');
+        $('.notify-form').trigger("reset");
+      }, 5000);
+    }
+  };
   // --------------------------------------------- //
-  // Direct Email Ping Form End
+  // Mailchimp Subscribe Form End
   // --------------------------------------------- //
 
   // --------------------------------------------- //
   // Contact Form Start
   // --------------------------------------------- //
-  $("#contact-form").submit(function() {
+  $("#contact-form").submit(function() { //Change
     var th = $(this);
-    var showReply = function() {
+    $.ajax({
+      type: "POST",
+      url: "mail.php", //Change
+      data: th.serialize()
+    }).done(function() {
       $('.contact').find('.form').addClass('is-hidden');
       $('.contact').find('.form__reply').addClass('is-visible');
       setTimeout(function() {
+        // Done Functions
         $('.contact').find('.form__reply').removeClass('is-visible');
         $('.contact').find('.form').delay(300).removeClass('is-hidden');
         th.trigger("reset");
       }, 5000);
-    };
-    $.ajax({
-      type: "POST",
-      url: "mail.php",
-      data: th.serialize()
-    }).done(showReply).fail(function() {
-      var name = th.find('[name="Name"]').val() || '';
-      var company = th.find('[name="Company"]').val() || '';
-      var email = th.find('[name="E-mail"]').val() || '';
-      var phone = th.find('[name="Phone"]').val() || '';
-      var msg = th.find('[name="Message"]').val() || '';
-      var subject = encodeURIComponent("Portfolio Inquiry from " + name + (company ? " (" + company + ")" : ""));
-      var body = encodeURIComponent("Name: " + name + "\nCompany: " + company + "\nEmail: " + email + "\nPhone: " + phone + "\n\nMessage:\n" + msg);
-      window.location.href = "mailto:dangkhoa3971@gmail.com?subject=" + subject + "&body=" + body;
-      showReply();
     });
     return false;
   });
@@ -654,40 +653,36 @@ const isMobileViewport = window.matchMedia("(max-width: 767.98px)").matches;
 const images = document.querySelectorAll(".parallax-img");
 const imagesSmall = document.querySelectorAll(".parallax-img-small");
 const video = document.querySelectorAll(".parallax-video");
-const ukiyoInstances = [];
-if (images.length) {
-  ukiyoInstances.push(new Ukiyo(images, {
-    scale: isMobileViewport ? 1.2 : 1.5,
-    speed: isMobileViewport ? 1.3 : 1.5,
-    willChange: true,
-    externalRAF: true,
-  }));
-}
-if (imagesSmall.length) {
-  ukiyoInstances.push(new Ukiyo(imagesSmall, {
-    scale: isMobileViewport ? 1.12 : 1.2,
-    speed: isMobileViewport ? 1.25 : 1.5,
-    willChange: true,
-    externalRAF: true,
-  }));
-}
-if (video.length) {
-  ukiyoInstances.push(new Ukiyo(video, {
-    scale: isMobileViewport ? 1.2 : 1.5,
-    speed: isMobileViewport ? 1.3 : 1.5,
-    willChange: true,
-    externalRAF: true,
-  }));
-}
-if (ukiyoInstances.length) {
-  const animateUkiyo = () => {
-    for (let i = 0; i < ukiyoInstances.length; i++) {
-      ukiyoInstances[i].animate();
-    }
-  };
-  animateUkiyo();
-  lenis.on('scroll', animateUkiyo);
-  ScrollTrigger.addEventListener("refresh", animateUkiyo);
+if (!isMobileViewport) {
+  const ukiyoInstances = [];
+  if (images.length) {
+    ukiyoInstances.push(new Ukiyo(images, {
+      scale: 1.5,
+      speed: 1.5,
+      externalRAF: true,
+    }));
+  }
+  if (imagesSmall.length) {
+    ukiyoInstances.push(new Ukiyo(imagesSmall, {
+      scale: 1.2,
+      speed: 1.5,
+      externalRAF: true,
+    }));
+  }
+  if (video.length) {
+    ukiyoInstances.push(new Ukiyo(video, {
+      scale: 1.5,
+      speed: 1.5,
+      externalRAF: true,
+    }));
+  }
+  if (ukiyoInstances.length) {
+    gsap.ticker.add(() => {
+      for (let i = 0; i < ukiyoInstances.length; i++) {
+        ukiyoInstances[i].animate();
+      }
+    });
+  }
 }
 // --------------------------------------------- //
 // Parallax - Ukiyo Images & Video End
@@ -859,11 +854,9 @@ animateInUp.forEach((element) => {
     opacity: 0,
     y: 50,
     ease: 'sine',
-    force3D: true
   }, {
     y: 0,
     opacity: 1,
-    force3D: true,
     scrollTrigger: {
       trigger: element,
       toggleActions: 'play none none reverse',
@@ -878,15 +871,13 @@ animateInUpFront.forEach((element) => {
     opacity: 1,
     y: 50,
     //x: 70,
-    scale: isMobileViewport ? 1.08 : 1.2,
+    scale: 1.2,
     ease: 'sine',
-    force3D: true
   }, {
     y: 0,
     x: 0,
     opacity: 1,
     scale: 1,
-    force3D: true,
     scrollTrigger: {
       trigger: element,
       toggleActions: 'play none none reverse',
@@ -900,16 +891,15 @@ animateInUpRight.forEach((element) => {
   gsap.fromTo(element, {
     opacity: 1,
     y: 50,
-    x: isMobileViewport ? -30 : -70,
-    scale: isMobileViewport ? 1.08 : 1.2,
+    x: -70,
+    scale: 1.2,
     ease: 'sine',
-    force3D: true
+    duration: 5
   }, {
     y: 0,
     x: 0,
     opacity: 1,
     scale: 1,
-    force3D: true,
     scrollTrigger: {
       trigger: element,
       toggleActions: 'play none none reverse',
@@ -923,16 +913,14 @@ animateInUpLeft.forEach((element) => {
   gsap.fromTo(element, {
     opacity: 1,
     y: 50,
-    x: isMobileViewport ? 30 : 70,
-    scale: isMobileViewport ? 1.08 : 1.2,
+    x: 70,
+    scale: 1.2,
     ease: 'sine',
-    force3D: true
   }, {
     y: 0,
     x: 0,
     opacity: 1,
     scale: 1,
-    force3D: true,
     scrollTrigger: {
       trigger: element,
       toggleActions: 'play none none reverse',
@@ -1067,8 +1055,8 @@ zoomInContainer.forEach((element) => {
     },
   });
   zoomInBlockTl.fromTo(element, {
-    borderRadius: isMobileViewport ? '120px' : '200px',
-    transform: isMobileViewport ? "scale3d(0.96, 1, 1)" : "scale3d(0.94, 1, 1)"
+    borderRadius: '200px',
+    transform: "scale3d(0.94, 1, 1)"
   }, 
   {
     borderRadius: docStyle.getPropertyValue("--_radius-l"),
@@ -1091,8 +1079,8 @@ zoomOutContainer.forEach((element) => {
     },
   });
   zoomOutBlockTl.fromTo(element, {
-    borderRadius: isMobileViewport ? '120px' : '200px',
-    transform: isMobileViewport ? "scale3d(1.06, 1, 1)" : "scale3d(1.14, 1, 1)"
+    borderRadius: '200px',
+    transform: "scale3d(1.14, 1, 1)"
   }, 
   {
     borderRadius: docStyle.getPropertyValue("--_radius-l"),
@@ -1264,9 +1252,9 @@ const marquee = (item, time, direction) => {
   const isLeft = direction === "-=50%";
   return gsap.fromTo(
     item,
-    { xPercent: isLeft ? 0 : -50 },
+    { xPercent: isLeft ? 50 : 0 },
     {
-      xPercent: isLeft ? -50 : 0,
+      xPercent: isLeft ? 0 : 50,
       duration: time,
       ease: "none",
       force3D: true,
@@ -1289,25 +1277,23 @@ const bindMarqueeScrollControl = (itemBlock, master) => {
     }
   });
 
-  let timeScaleClamp = gsap.utils.clamp(1, isMobileViewport ? 2.5 : 4);
-  let resetTween = gsap.to(master, {
-    duration: 1.0,
-    timeScale: 1,
-    ease: "sine.out",
-    paused: true
-  });
-  ScrollTrigger.create({
-    trigger: itemBlock,
-    start: "top bottom",
-    end: "bottom top",
-    onUpdate: (self) => {
-      const targetScale = timeScaleClamp(Math.abs(self.getVelocity() / 300));
-      if (targetScale > 1.05) {
-        master.timeScale(targetScale);
+  if (!isMobileViewport) {
+    let timeScaleClamp = gsap.utils.clamp(1, 4);
+    let resetTween = gsap.to(master, {
+      duration: 1.2,
+      timeScale: 1,
+      paused: true
+    });
+    ScrollTrigger.create({
+      trigger: itemBlock,
+      start: "top bottom",
+      end: "bottom top",
+      onUpdate: (self) => {
+        master.timeScale(timeScaleClamp(Math.abs(self.getVelocity() / 250)));
         resetTween.invalidate().restart();
       }
-    }
-  });
+    });
+  }
 };
 
 const initMarquees = () => {

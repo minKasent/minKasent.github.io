@@ -4137,6 +4137,10 @@ p.t-semibold {
 }
 
 @-webkit-keyframes spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+  }
   100% {
     -webkit-transform: rotate(360deg);
             transform: rotate(360deg);
@@ -4144,6 +4148,10 @@ p.t-semibold {
 }
 
 @-moz-keyframes spin {
+  0% {
+    -moz-transform: rotate(0deg);
+         transform: rotate(0deg);
+  }
   100% {
     -moz-transform: rotate(360deg);
          transform: rotate(360deg);
@@ -4151,6 +4159,11 @@ p.t-semibold {
 }
 
 @keyframes spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+       -moz-transform: rotate(0deg);
+            transform: rotate(0deg);
+  }
   100% {
     -webkit-transform: rotate(360deg);
        -moz-transform: rotate(360deg);
@@ -21695,7 +21708,12 @@ body {
 .mxd-rotate,
 .mxd-rotate-slow,
 .mxd-pulse,
-.mxd-pulse-small,
+.mxd-pulse-small {
+  will-change: transform;
+  -webkit-backface-visibility: hidden;
+          backface-visibility: hidden;
+}
+
 .anim-zoom-in-container,
 .anim-zoom-out-container,
 .mxd-project-item__video,

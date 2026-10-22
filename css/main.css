@@ -21732,6 +21732,21 @@ body {
       height: calc(100svh - 7.6rem);
     }
   }
+  .mxd-hero-03__marquee {
+    top: 41%;
+  }
+  .hero-03-marquee__video {
+    width: 58vw;
+    height: 58vw;
+  }
+  .hero-03-marquee__image {
+    width: 58vw;
+  }
+  .mxd-hero-03__headline {
+    bottom: 11vh;
+    padding: 0 1.6rem;
+    overflow: visible;
+  }
   .mxd-block__portrait {
     max-width: 320px;
     margin-top: 2rem;
@@ -21741,6 +21756,22 @@ body {
     transform: translateZ(0);
     -webkit-transform: translateZ(0);
   }
+}
+
+.hero-03-star-spin {
+  transform-box: fill-box;
+  transform-origin: center;
+  -webkit-animation: spin 10s linear infinite;
+     -moz-animation: spin 10s linear infinite;
+          animation: spin 10s linear infinite;
+}
+
+.hero-03-star-spin-rev {
+  transform-box: fill-box;
+  transform-origin: center;
+  -webkit-animation: spin 10s linear infinite reverse;
+     -moz-animation: spin 10s linear infinite reverse;
+          animation: spin 10s linear infinite reverse;
 }
 /* ------------------------------------------------*/
 /* Mobile Smoothness & GPU Acceleration Polish End */

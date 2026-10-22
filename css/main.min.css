@@ -21726,26 +21726,62 @@ body {
           transform: translateZ(0);
 }
 
+.mxd-hero-03__intro {
+  position: absolute;
+  top: 15%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+     -moz-transform: translate(-50%, -50%);
+      -ms-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+  width: 100%;
+  padding: 0 2rem;
+  text-align: center;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.hero-03-intro__text {
+  font: normal var(--fw-bold) clamp(3.8rem, 11vw, 7rem)/1.1 var(--_font-accent);
+  letter-spacing: -0.08rem;
+  color: var(--t-bright);
+  margin: 0;
+  min-height: 1.2em;
+}
+.hero-03-intro__text b {
+  font-weight: var(--fw-bold);
+}
+
 @media only screen and (max-width: 767.98px) {
   @supports (height: 100svh) {
     .mxd-hero-03__top {
       height: calc(100svh - 7.6rem);
     }
   }
+  .mxd-hero-03__intro {
+    top: 20%;
+    padding: 0 1.6rem;
+  }
   .mxd-hero-03__marquee {
-    top: 41%;
+    top: 52%;
   }
   .hero-03-marquee__video {
-    width: 58vw;
-    height: 58vw;
+    width: 64vw;
+    height: 64vw;
   }
   .hero-03-marquee__image {
-    width: 58vw;
+    width: 64vw;
   }
   .mxd-hero-03__headline {
-    bottom: 11vh;
-    padding: 0 1.6rem;
+    top: 64%;
+    bottom: auto;
+    -webkit-transform: translate(-50%, -50%);
+       -moz-transform: translate(-50%, -50%);
+        -ms-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+    padding: 0 1.4rem;
     overflow: visible;
+    z-index: 3;
   }
   .mxd-block__portrait {
     max-width: 320px;
@@ -21756,22 +21792,6 @@ body {
     transform: translateZ(0);
     -webkit-transform: translateZ(0);
   }
-}
-
-.hero-03-star-spin {
-  transform-box: fill-box;
-  transform-origin: center;
-  -webkit-animation: spin 10s linear infinite;
-     -moz-animation: spin 10s linear infinite;
-          animation: spin 10s linear infinite;
-}
-
-.hero-03-star-spin-rev {
-  transform-box: fill-box;
-  transform-origin: center;
-  -webkit-animation: spin 10s linear infinite reverse;
-     -moz-animation: spin 10s linear infinite reverse;
-          animation: spin 10s linear infinite reverse;
 }
 /* ------------------------------------------------*/
 /* Mobile Smoothness & GPU Acceleration Polish End */
